@@ -120,7 +120,7 @@ else:
     #lib = CDLL("../libdarknet/libdarknet.so", RTLD_GLOBAL)
 
     #lib = CDLL(os.path.join(os.getcwd(), "libdarknet.so"), RTLD_GLOBAL)
-    lib = CDLL(os.path.join(darknet_path, "libdarknet.so"), RTLD_GLOBAL)
+    lib = CDLL(os.path.join(os.environ['DARKNET'], "libdarknet.so"), RTLD_GLOBAL)
 lib.network_width.argtypes = [c_void_p]
 lib.network_width.restype = c_int
 lib.network_height.argtypes = [c_void_p]
