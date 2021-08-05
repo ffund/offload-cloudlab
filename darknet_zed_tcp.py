@@ -250,6 +250,7 @@ def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45, debug=False):
     for j in range(num):
         for i in range(meta.classes):
             if dets[j].prob[i] > 0:
+                print("Non-zero probability")
                 b = dets[j].bbox
                 if altNames is None:
                     nameTag = meta.names[i]
@@ -363,7 +364,7 @@ def main(argv):
         elif opt in ("-s", "--svo_file"):
             svoPath = arg
 
-    init = sl.InitParameters()
+    init = sl.InitParameters(svo_real_time_mode=True)
     init.coordinate_units = sl.UNIT.METER
     if svoPath is not None:
         init.set_from_svo_file(svoPath)
@@ -426,10 +427,12 @@ def main(argv):
 
     print("Running...")
 
-    key = ''
-    while key != 113:  # for 'q' key
+    #key = ''
+    while True: #key != 113:  # for 'q' key
         err = cam.grab(runtime)
+        print("Trying to grab a frame")
         if err == sl.ERROR_CODE.SUCCESS:
+            print("Grabbed a frame")
             cam.retrieve_image(mat, sl.VIEW.LEFT)
             image = mat.get_data()
             #img=cv2.imread(image)
@@ -440,11 +443,13 @@ def main(argv):
             cam.retrieve_measure(
                 point_cloud_mat, sl.MEASURE.XYZRGBA)
             depth = point_cloud_mat.get_data()
+            print("Got point cloud")
 
             # Do the detection
             detections = detect(netMain, metaMain, image, thresh)
+            print(detections)
             num_dec = len(detections)
-
+            print("Detected %d" % num_dec)
             print(chr(27) + "[2J")
 
             #  print(chr(27) + "[2J"+"**** " +
@@ -483,7 +488,7 @@ def main(argv):
                 # cv2.rectangle(image, (xCoord-thickness, yCoord-thickness), (xCoord + xEntent+thickness, yCoord+(18 +thickness*4)), color_array[detection[3]], -1)
                 # cv2.putText(image, label + " " +  (str(distance) + " m"), (xCoord+(thickness*4), yCoord+(10 +thickness*4)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
                 # cv2.rectangle(image, (xCoord-thickness, yCoord-thickness), (xCoord + xEntent+thickness, yCoord + yExtent+thickness), color_array[detection[3]], int(thickness*2))
-                    cv2.rectangle(image, (width*(dec_tmp[0][0]-1)//5,height*(2-dec_tmp[0][1])//2),(width*(dec_tmp[0][0])//5,height*(3-dec_tmp[0][1])//2),color_array[detection[3]],10)
+                #    cv2.rectangle(image, (width*(dec_tmp[0][0]-1)//5,height*(2-dec_tmp[0][1])//2),(width*(dec_tmp[0][0])//5,height*(3-dec_tmp[0][1])//2),color_array[detection[3]],10)
                 # print((width//5*(exp_map[0][0]-1),height//2*(exp_map[0][1]-1)))
                 # print((width//5*(exp_map[0][0]),height//2*(exp_map[0][1])))
                 # print(color_array[detection[3]])
@@ -500,12 +505,16 @@ def main(argv):
                 time.sleep(0.03)
             # print(height,width,height_min,width_min)
             # print(exp_map)
-            cv2.rectangle(image,(height_min,width_min),(height,width),(255,0,0),2)
-            cv2.imshow("ZED", image)
-            key = cv2.waitKey(5)
+            #cv2.rectangle(image,(height_min,width_min),(height,width),(255,0,0),2)
+            #cv2.imshow("ZED", image)
+            #key = cv2.waitKey(5)
+            else:
+                print("Did not detect any object in the frame")
         else:
-            key = cv2.waitKey(5)
-    cv2.destroyAllWindows()
+            print("Did not get a frame")
+            break
+            #key = cv2.waitKey(5)
+    #cv2.destroyAllWindows()
 
 
     s.close()
