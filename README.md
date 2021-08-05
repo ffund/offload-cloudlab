@@ -46,6 +46,14 @@ sudo chown $USER /data
 
 Now, install some pre-requisites for Darknet.
 
+Install OpenCV and ZED Python libraries:
+
+```
+sudo pip3 install --upgrade pip
+sudo pip3 install opencv-python
+sudo python3 -m pip install --ignore-installed /usr/local/zed/pyzed-3.5-cp36-cp36m-linux_x86_64.whl
+```
+
 Install a newer `cmake`:
 
 ```
@@ -83,4 +91,14 @@ export CUDA_PATH=/usr/local/cuda-11.0/bin
 export CUDACXX=/usr/local/cuda-11.0/bin/nvcc
 cmake ..
 cmake --build . --target install --parallel 8
+```
+
+## Running the distance estimation script
+
+Transfer one `.svo` file to the `/data` directory on the server.
+
+The script expects a TCP listener on port 9998, so in a second terminal on the server, run
+
+```
+netcat -l 9998
 ```
