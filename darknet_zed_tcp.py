@@ -358,9 +358,9 @@ def main(argv):
             svoPath = arg
 
     init = sl.InitParameters()
-    init.coordinate_units = sl.UNIT.UNIT_METER
+    init.coordinate_units = sl.UNIT.METER
     if svoPath is not None:
-        init.svo_input_filename = svoPath
+        init.set_from_svo_file(svoPath)
 
     cam = sl.Camera()
     if not cam.is_opened():
@@ -372,7 +372,7 @@ def main(argv):
 
     runtime = sl.RuntimeParameters()
     # Use STANDARD sensing mode
-    runtime.sensing_mode = sl.SENSING_MODE.SENSING_MODE_STANDARD
+    runtime.sensing_mode = sl.SENSING_MODE.STANDARD
     mat = sl.Mat()
     point_cloud_mat = sl.Mat()
 
@@ -424,7 +424,7 @@ def main(argv):
     while key != 113:  # for 'q' key
         err = cam.grab(runtime)
         if err == sl.ERROR_CODE.SUCCESS:
-            cam.retrieve_image(mat, sl.VIEW.VIEW_LEFT)
+            cam.retrieve_image(mat, sl.VIEW.LEFT)
             image = mat.get_data()
             #img=cv2.imread(image)
             height,width,c=image.shape
@@ -432,7 +432,7 @@ def main(argv):
             width_min=width//2
 
             cam.retrieve_measure(
-                point_cloud_mat, sl.MEASURE.MEASURE_XYZRGBA)
+                point_cloud_mat, sl.MEASURE.XYZRGBA)
             depth = point_cloud_mat.get_data()
 
             # Do the detection
