@@ -2,7 +2,17 @@ This is a CloudLab profile (and associated scripts and other utilities) for expe
 
 ## Using this repository
 
-The contents of this repository will be cloned into the directory `/local/repository` on all nodes in the experiment.
+The contents of this repository should be cloned into the directory `/local/repository` on all nodes in the experiment.
+
+```
+git clone https://github.com/ffund/offload-cloudlab/ /local/repository
+```
+
+## CloudLab profiles
+
+To get four nodes in a line, with a GPU on the server node, use [offload](https://www.cloudlab.us/p/nyunetworks/offload).
+
+To get a single server node with a GPU, use [wearable](https://www.cloudlab.us/p/nyunetworks/wearable). 
 
 ## Setting up the server
 
@@ -93,6 +103,20 @@ cmake ..
 cmake --build . --target install --parallel 8
 ```
 
+Download the YOLO weights:
+
+```
+wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights -O /data/yolov4.weights
+```
+
+Create a COCO config file in `/data/coco.data` with the following contents:
+
+```
+classes= 80
+names = /data/darknet/cfg/coco.names
+eval=coco
+```
+
 ## Running the distance estimation script
 
 Transfer one `.svo` file to the `/data` directory on the server.
@@ -101,4 +125,10 @@ The script expects a TCP listener on port 9998, so in a second terminal on the s
 
 ```
 netcat -l 9998
+```
+
+Then you can run the script with
+
+```
+DARKNET='/data/darknet/' python3 /local/repository/darknet_zed_tcp.py -s /data/89_07062021_LCS_LG_HD1080_30_12000_Jacky.svo -m /data/coco.data -w /data/yolov4.weights
 ```
