@@ -120,7 +120,7 @@ else:
     #lib = CDLL("../libdarknet/libdarknet.so", RTLD_GLOBAL)
 
     #lib = CDLL(os.path.join(os.getcwd(), "libdarknet.so"), RTLD_GLOBAL)
-    lib = CDLL("/home/mmvc/Downloads/zed-yolo/libdarknet/libdarknet.so", RTLD_GLOBAL)
+    lib = CDLL(os.path.join(darknet_path, "libdarknet.so"), RTLD_GLOBAL)
 lib.network_width.argtypes = [c_void_p]
 lib.network_width.restype = c_int
 lib.network_height.argtypes = [c_void_p]
@@ -338,7 +338,7 @@ def main(argv):
     help_str = 'darknet_zed.py -c <config> -w <weight> -m <meta> -t <threshold> -s <svo_file>'
     try:
         opts, args = getopt.getopt(
-            argv, "hc:w:m:t:s:", ["config=", "weight=", "meta=", "threshold=", "svo_file="])
+            argv, "hd:c:w:m:t:s:", ["darknet=","config=", "weight=", "meta=", "threshold=", "svo_file="])
     except getopt.GetoptError:
         print (help_str)
         sys.exit(2)
@@ -346,6 +346,8 @@ def main(argv):
         if opt == '-h':
             print (help_str)
             sys.exit()
+        elif opt in ("-d", "--darknet"):
+            darknet_path = arg
         elif opt in ("-c", "--config"):
             configPath = arg
         elif opt in ("-w", "--weight"):
