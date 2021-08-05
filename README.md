@@ -133,3 +133,30 @@ Then you can run the script with (modified video file path/name as appropriate):
 ```
 DARKNET='/data/darknet/' python3 /local/repository/darknet_zed_tcp.py -s /data/89_07062021_LCS_LG_HD1080_30_12000_Jacky.svo -m /data/coco.data -w /data/yolov3.weights
 ```
+
+
+## Test object detection
+
+If you are using VNC or X11 forwarding (i.e. if you can open a GUI on the server node), you can test the object detection functionality of darknet on a still image:
+
+```
+wget "https://i.natgeofe.com/n/18f87e08-5b10-4906-9b7f-6328fa6233e0/NationalGeographic_2168711.jpg" -O /data/shopping.jpg
+cd /data/darknet
+./darknet detect cfg/yolov3.cfg /data/yolov3.weights /data/shopping.jpg
+```
+
+If you have X11 forwarding, it will open a display with the image, the bounding boxes, and the labels.
+
+If you don't have X11 forwarding, it will still tell you how many objects were detected and their probabilities, the output should look like this:
+
+```
+/data/shopping.jpg: Predicted in 357.820000 milli-seconds.
+person: 89%
+person: 54%
+person: 92%
+Unable to init server: Could not connect: Connection refused
+
+(predictions:2510): Gtk-WARNING **: 14:21:50.209: cannot open display: 
+```
+
+```
