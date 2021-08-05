@@ -107,6 +107,7 @@ Download the YOLO weights:
 
 ```
 wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights -O /data/yolov4.weights
+wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov3.weights -O /data/yolov3.weights
 ```
 
 Create a COCO config file in `/data/coco.data` with the following contents:
@@ -130,5 +131,5 @@ netcat -l 9998
 Then you can run the script with
 
 ```
-DARKNET='/data/darknet/' python3 /local/repository/darknet_zed_tcp.py -s /data/89_07062021_LCS_LG_HD1080_30_12000_Jacky.svo -m /data/coco.data -w /data/yolov4.weights
+DARKNET='/data/darknet/' python3 /local/repository/darknet_zed_tcp.py -s /data/89_07062021_LCS_LG_HD1080_30_12000_Jacky.svo -m /data/coco.data -w /data/yolov3.weights
 ```
