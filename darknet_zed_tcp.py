@@ -329,7 +329,7 @@ def main(argv):
 
 
     thresh = 0.25
-    darknet_path="../libdarknet/"
+    darknet_path=os.environ['DARKNET']
     configPath = darknet_path + "cfg/yolov3-tiny.cfg"
     weightPath = "yolov3-tiny.weights"
     metaPath = "coco.data"
@@ -338,7 +338,7 @@ def main(argv):
     help_str = 'darknet_zed.py -c <config> -w <weight> -m <meta> -t <threshold> -s <svo_file>'
     try:
         opts, args = getopt.getopt(
-            argv, "hd:c:w:m:t:s:", ["darknet=","config=", "weight=", "meta=", "threshold=", "svo_file="])
+            argv, "hc:w:m:t:s:", ["config=", "weight=", "meta=", "threshold=", "svo_file="])
     except getopt.GetoptError:
         print (help_str)
         sys.exit(2)
@@ -346,8 +346,6 @@ def main(argv):
         if opt == '-h':
             print (help_str)
             sys.exit()
-        elif opt in ("-d", "--darknet"):
-            darknet_path = arg
         elif opt in ("-c", "--config"):
             configPath = arg
         elif opt in ("-w", "--weight"):
