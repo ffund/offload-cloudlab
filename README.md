@@ -133,9 +133,3 @@ Then you can run the script with (modified video file path/name as appropriate):
 ```
 DARKNET='/data/darknet/' python3 /local/repository/darknet_zed_tcp.py -s /data/89_07062021_LCS_LG_HD1080_30_12000_Jacky.svo -m /data/coco.data -w /data/yolov3.weights
 ```
-
-Or you can run the "official" ZED YOLO script with
-
-```
-DARKNET='/data/darknet/' python3 /local/repository/darknet_zed.py -s /data/89_07062021_LCS_LG_HD1080_30_12000_Jacky.svo -m /data/coco.data -w /data/yolov3.weights
-```
